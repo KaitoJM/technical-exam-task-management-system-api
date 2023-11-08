@@ -34,6 +34,14 @@ class AuthController extends Controller
         return response()->json(['message' => 'Bad credentials'], 401);
     }
 
+    public function userInfo() {
+        /** @var User */
+        $user = auth()->user();
+
+        return response()
+            ->json($user);
+    }
+
     public function register(RegistrationRequest $request) {
         $user = $this->user_service->add(
             $request->name,
