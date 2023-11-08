@@ -28,7 +28,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $list = $this->task_service->getList();
+        $list = $this->task_service->getList(Auth::user()->id);
 
         return response(TaskResource::collection($list));
     }

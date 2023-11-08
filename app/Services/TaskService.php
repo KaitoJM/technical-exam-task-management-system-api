@@ -6,8 +6,8 @@ use App\Models\Task;
 
 class TaskService
 {
-    public function getList() {
-        return Task::all();
+    public function getList($user_id) {
+        return Task::where('created_by', $user_id)->get();
     }
 
     public function get(int $id): ?Task {
