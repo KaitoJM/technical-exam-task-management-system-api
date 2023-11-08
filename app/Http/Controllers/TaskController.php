@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Illuminate\Support\Facades\Log;
+
 use Illuminate\Http\Request;
+use App\Http\Requests\AddNewTaskRequest;
+use App\Http\Resources\TaskResource;
 
 use App\Services\TaskService;
 
@@ -23,17 +28,7 @@ class TaskController extends Controller
     {
         $list = $this->task_service->getList();
 
-        return response($list);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response(TaskResource::collection($list));
     }
 
     /**
@@ -42,9 +37,23 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddNewTaskRequest $request)
     {
-        //
+        $task = $this->task_service->addNew(
+            $request->title,
+            $request->description,
+            $request->due_date,
+            Auth::user()->id,
+            $request->assignee_id,
+        );
+
+        if ($task->id) {
+            Log::info(Auth::user()->name . 'has created a new task with an id #' . $task->id . ' for a user with an id of #' . $request->assignee_id);
+            return response()->json(new TaskResource($task), 201);
+        }
+
+        Log::error('There was an error while adding a new task user with title "' . $request->title . '".');
+        return response()->json('Something wen\'t wrong with your request. Please try again.', 400);
     }
 
     /**

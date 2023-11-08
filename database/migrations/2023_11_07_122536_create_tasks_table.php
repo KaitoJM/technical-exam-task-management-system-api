@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('due_date');
             $table->foreignId('created_by');
             $table->foreignId('assignee_id');
-            $table->enum('status', ['open', 'in progress', 'completed']);
+            $table->enum('status', ['open', 'in progress', 'completed'])->default('open');
             $table->timestamps();
         });
     }

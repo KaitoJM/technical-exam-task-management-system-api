@@ -38,7 +38,7 @@ class AuthController extends Controller
         ];
 
         Log::info('A user with an id #' . $user->id . ' was logged-in to the system.');
-        return response($response, 201);
+        return response()->json($response, 201);
     }
 
     public function register(RegistrationRequest $request) {
