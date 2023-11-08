@@ -14,13 +14,12 @@ class TaskService
         return Task::findOrFail($id);
     }
 
-    public function addNew($title, $description, $due_date, $created_by, $assignee_id): ?Task {
+    public function addNew($title, $description, $due_date, $created_by): ?Task {
         $data = [
             'title' => $title,
             'description' => $description,
             'due_date' => $due_date,
             'created_by' => $created_by,
-            'assignee_id' => $assignee_id,
         ];
 
         $task = Task::create($data);

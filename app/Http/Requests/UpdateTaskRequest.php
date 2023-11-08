@@ -27,7 +27,6 @@ class UpdateTaskRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'required',
             'due_date' => 'required|date',
-            'assignee_id' => 'required|numeric',
         ];
     }
 }

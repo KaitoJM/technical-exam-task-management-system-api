@@ -46,11 +46,10 @@ class TaskController extends Controller
             $request->description,
             $request->due_date,
             Auth::user()->id,
-            $request->assignee_id,
         );
 
         if ($task->id) {
-            Log::info(Auth::user()->name . ' has created a new task with an id #' . $task->id . ' for a user with an id of #' . $request->assignee_id);
+            Log::info(Auth::user()->name . ' has created a new task with title "' . $request->title . '".');
             return response()->json(new TaskResource($task), 201);
         }
 
@@ -86,7 +85,7 @@ class TaskController extends Controller
         );
 
         if ($updated) {
-            Log::info(Auth::user()->name . ' updated a task with an id #' . $id . ' that was assigned to a user with an id of #' . $request->assignee_id);
+            Log::info(Auth::user()->name . ' updated a task with  id #' . $id . '.');
             return response()->json($updated);
         }
     }

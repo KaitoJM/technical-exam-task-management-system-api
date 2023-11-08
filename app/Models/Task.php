@@ -18,7 +18,6 @@ class Task extends Model
         'description',
         'due_date',
         'created_by',
-        'assignee_id',
         'status',
     ];
 }

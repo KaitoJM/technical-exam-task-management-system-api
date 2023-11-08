@@ -31,7 +31,6 @@ class TaskFactory extends Factory
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'due_date' => fake()->date(),
-            'assignee_id' => User::inRandomOrder()->first()->id,
             'status' => $statuses[array_rand($statuses)],
         ];
     }
