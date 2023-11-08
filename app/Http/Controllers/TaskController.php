@@ -64,18 +64,9 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+        $task = $this->task_service->get($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response(new TaskResource($task));
     }
 
     /**

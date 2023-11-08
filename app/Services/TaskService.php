@@ -10,8 +10,8 @@ class TaskService
         return Task::all();
     }
 
-    public function get(Task $task): ?Task {
-        return $task;
+    public function get(int $id): ?Task {
+        return Task::findOrFail($id);
     }
 
     public function addNew($title, $description, $due_date, $created_by, $assignee_id): ?Task {
