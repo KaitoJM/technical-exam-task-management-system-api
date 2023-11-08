@@ -22,23 +22,16 @@ class AuthController extends Controller
     }
 
     public function login(LoginRequest $request) {
-        $user = User::where('email', $request->email)->first();
+        $user = $this->user_service->loginCheck($request->email, $request->password);
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response([
-                'message' => 'Bad credentials' 
-            ], 401);
+        if ($user) {
+            $token = $this->user_service->generateToken($user);
+
+            Log::info('A user with an id #' . $user->id . ' was logged-in to the system.');
+            return response()->json(['user' => $user, 'token' => $token], 201);
         }
 
-        $token = $this->user_service->generateToken($user);
-
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-
-        Log::info('A user with an id #' . $user->id . ' was logged-in to the system.');
-        return response()->json($response, 201);
+        return response()->json(['message' => 'Bad credentials'], 401);
     }
 
     public function register(RegistrationRequest $request) {

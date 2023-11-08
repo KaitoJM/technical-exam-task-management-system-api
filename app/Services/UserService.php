@@ -8,6 +8,16 @@ use Hash;
 
 class UserService
 {
+    public function loginCheck($email, $password): ?User {
+        $user = User::where('email', $email)->first();
+
+        if ($user && Hash::check($password, $user->password)) {
+            return $user;
+        }
+
+        return null;
+    }
+
     public function add($name, $email, $password): ?User {
         $fields = [
             'name' => $name,
