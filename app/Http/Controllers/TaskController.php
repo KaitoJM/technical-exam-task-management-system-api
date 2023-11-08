@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\AddNewTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
+
 use App\Http\Resources\TaskResource;
 
 use App\Services\TaskService;
@@ -48,7 +50,7 @@ class TaskController extends Controller
         );
 
         if ($task->id) {
-            Log::info(Auth::user()->name . 'has created a new task with an id #' . $task->id . ' for a user with an id of #' . $request->assignee_id);
+            Log::info(Auth::user()->name . ' has created a new task with an id #' . $task->id . ' for a user with an id of #' . $request->assignee_id);
             return response()->json(new TaskResource($task), 201);
         }
 
@@ -76,9 +78,17 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTaskRequest $request, $id)
     {
-        //
+        $updated = $this->task_service->modify(
+            $id,
+            $request->all(),
+        );
+
+        if ($updated) {
+            Log::info(Auth::user()->name . ' updated a task with an id #' . $id . ' that was assigned to a user with an id of #' . $request->assignee_id);
+            return response()->json($updated);
+        }
     }
 
     /**

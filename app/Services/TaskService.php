@@ -32,16 +32,8 @@ class TaskService
         return null;
     }
 
-    public function modify(Task $task, $title, $description, $due_date, $assignee_id, $status) {
-        $data = [
-            'title' => $title,
-            'description' => $description,
-            'due_date' => $due_date,
-            'assignee_id' => $assignee_id,
-            'status' => $status,
-        ];
-
-        $task->update($data);
+    public function modify($id, $params): int {
+        return Task::where('id', $id)->update($params);
     }
 
     public function remove($id) {
