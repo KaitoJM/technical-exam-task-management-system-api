@@ -22,5 +22,6 @@ Route::post('register', [AuthController::class, 'register']);
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('self', [AuthController::class, 'userInfo']);
+    Route::post('filter-tasks', [TaskController::class, 'index']);
     Route::apiResource('/tasks', TaskController::class);
 });

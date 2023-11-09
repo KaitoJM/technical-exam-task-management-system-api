@@ -26,9 +26,9 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $list = $this->task_service->getList(Auth::user()->id);
+        $list = $this->task_service->getList(Auth::user()->id, $request->all());
 
         return response(TaskResource::collection($list));
     }

@@ -6,10 +6,24 @@ use App\Models\Task;
 
 class TaskService
 {
-    public function getList($user_id) {
-        return Task::where('created_by', $user_id)
-            ->orderBy('created_at', 'DESC')
-            ->get();
+    public function getList($user_id, $filters = null) {
+        $query = Task::where('created_by', $user_id)
+            ->orderBy('created_at', 'DESC');
+
+        if (isset($filters['search'])) {
+            $query->where(function($search) use ($filters) {
+                $search->where('title', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('description', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+
+        if (isset($filters['status']) && ($filters['status'] != 'all')) {
+            $query->where('status', $filters['status']);
+        }
+
+        $data = $query->get();
+
+        return $data;
     }
 
     public function get(int $id): ?Task {
