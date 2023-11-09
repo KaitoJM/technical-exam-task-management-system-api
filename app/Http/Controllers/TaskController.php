@@ -53,7 +53,7 @@ class TaskController extends Controller
             return response()->json(new TaskResource($task), 201);
         }
 
-        Log::error('There was an error while adding a new task user with title "' . $request->title . '".');
+        Log::error('There was an error while adding a new task with title "' . $request->title . '".');
         return response()->json('Something wen\'t wrong with your request. Please try again.', 400);
     }
 
@@ -79,14 +79,14 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, $id)
     {
-        $updated = $this->task_service->modify(
+        $updated_task = $this->task_service->modify(
             $id,
             $request->all(),
         );
 
-        if ($updated) {
-            Log::info(Auth::user()->name . ' updated a task with  id #' . $id . '.');
-            return response()->json($updated);
+        if ($updated_task) {
+            Log::info(Auth::user()->name . ' updated a task with id #' . $id . '.');
+            return response()->json($updated_task);
         }
     }
 
@@ -98,6 +98,14 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleted = $this->task_service->remove($id);
+
+        if ($deleted) {
+            Log::info(Auth::user()->name . ' deleted a task with id #' . $id . '.');
+            return response()->json($deleted);
+        }
+
+        Log::error('There was an error while deleting a task with id #' . $id . '.');
+        return response()->json('Something wen\'t wrong with your request. Please try again.', 400); 
     }
 }
