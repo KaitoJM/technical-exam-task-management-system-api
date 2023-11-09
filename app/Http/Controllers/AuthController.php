@@ -31,7 +31,7 @@ class AuthController extends Controller
             return response()->json(['user' => $user, 'token' => $token], 201);
         }
 
-        return response()->json(['message' => 'Bad credentials'], 401);
+        return response()->json(['message' => 'Wrong email or password.'], 401);
     }
 
     public function userInfo() {
