@@ -57,4 +57,8 @@ class AuthController extends Controller
         Log::error('There was an error while registering a user with "' . $request->email . '" email.');
         return response()->json('Something wen\'t wrong with your request. Please try again.', 400);
     }
+
+    public function logout(Request $request) {
+        auth()->logout();
+    }
 }
